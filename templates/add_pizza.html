@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+    <style>
+        .add {
+            margin: auto;
+        }
+
+        input[type=submit] {
+            margin: 10px 10px 2px 50px;
+        }
+    </style>
+    <form method="post">
+        <div class="add">
+            <label>Name<input name="name" type="text" required></label>
+            <label>Properties<input name="properties" type="text" required></label>
+            <label>price<input name="price" type="text" required></label>
+            <label>image<input name="image" type="text" required></label>
+            <input type="submit" value="Отправить">
+        </div>
+        <h3 onclick="location.href = '{{ url_for("main_page") }}'" class="new_film">Назад</h3>
+    </form>
+{% endblock %}

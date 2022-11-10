@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block body %}
+    <h1>{{ title }}</h1>
+    <style>
+    .new_pizza {
+        cursor: pointer;
+        text-align: center;
+        border-style: solid;
+        border-color: mediumaquamarine;
+        width: 400px;
+        margin: auto;
+        color: black;
+    }
+    div {
+        text-align: center;
+        border-style: solid;
+        border-color: mediumaquamarine;
+        width: 250px;
+        margin: auto;
+        color: black;
+    }
+    .header {
+        margin: 8px 0px;
+        color: rgb(0, 0, 0);
+        font-size: 20px;
+        line-height: 24px;
+        font-family: "Segoe UI", serif;
+        font-weight: 500;
+        text-align: left;
+    }
+    .description{
+        margin: 0px;
+        width: 100%;
+        font-size: 14px;
+        line-height: 20px;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        color: rgb(92, 99, 112);
+        font-weight: 400;
+        text-align: left;
+    }
+    .price{
+        flex: 1 1 auto;
+        padding-right: 4px;
+        font-size: 20px;
+        color: rgb(0, 0, 0);
+        font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        font-weight: 600;
+        line-height: 22px;
+        display: flex;
+        flex-flow: column;
+        -webkit-box-pack: center;
+        justify-content: center;
+    }
+.popup {
+background: rgba(102, 102, 102, 0.5);
+width: 100%;
+height: 100%;
+position: absolute;
+top: 0;
+left: 0;
+display: none;
+}
+.window{
+width: 300px;
+height: 600px;
+text-align: center;
+padding: 15px;
+border: 3px solid #0000cc;
+border-radius: 10px;
+color: #0000cc;
+position: absolute;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+margin: auto;
+background: #fff;
+}
+.popup:target {display: block;}
+.close {
+display: inline-block;
+border: 1px solid #0000cc;
+color: #0000cc;
+padding: 0 12px;
+margin: 10px;
+text-decoration: none;
+background: #f2f2f2;
+font-size: 14pt;
+cursor:pointer;
+}
+.close:hover {background: #e6e6ff;}
+    </style>
+    {% for pizza in pizzas %}
+        <div id="popup_{{ pizza.id }}" class="popup">
+            <div id="window_{{ pizza.id }}" class="window">
+                <img src="{{ pizza.image }}" width=150 height=150 alt="Здесь должна быть фотка {{ pizza.name }}">
+                <p class="header">{{ pizza.name }}</p>
+                <p class="description"> {{ pizza.properties }}</p>
+                <p class="price">От {{ pizza.price }} ₽</p>
+                <a href="#" class="close">Закрыть окно</a>
+            </div>
+        </div>
+        <div onclick="location.href = '#popup_{{ pizza.id }}'">
+            <img src="{{ pizza.image }}" width=150 height=150 alt="Здесь должна быть фотка {{ pizza.name }}">
+            <p class="header">{{ pizza.name }}</p>
+            <p class="description"> {{ pizza.properties }}</p>
+            <p class="price">От {{ pizza.price }} ₽</p>
+        </div>
+    {% endfor %}
+    <h3 onclick="location.href = '{{ url_for("add_pizza") }}'" class="new_pizza">Добавить пиццу</h3>
+{% endblock %}
