@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
-import db_util
 from flask_login import LoginManager, UserMixin, current_user, login_user
 
 
@@ -10,7 +9,6 @@ app.secret_key = "111"
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Init123#@localhost:5432/pizza_shop"
 app.permanent_session_lifetime = timedelta(days=365)
 db = SQLAlchemy(app)
-pizza_shop = db_util.Database()
 login_manager = LoginManager()
 login_manager.init_app(app)
 
