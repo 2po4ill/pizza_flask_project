@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, make_response, session
+from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import timedelta
-import db_util
-from random import choice
+from flask_login import LoginManager, UserMixin, current_user, login_user
 
 
 app = Flask(__name__)
@@ -10,8 +9,8 @@ app.secret_key = "111"
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Init123#@localhost:5432/pizza_shop"
 app.permanent_session_lifetime = timedelta(days=365)
 db = SQLAlchemy(app)
-
-pizza_shop = db_util.Database()
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 
 class Pizzas(db.Model):
@@ -22,31 +21,28 @@ class Pizzas(db.Model):
     image = db.Column(db.TEXT)
 
 
-class Users(db.Model):
-    login = db.Column(db.VARCHAR, primary_key=True)
+class Users(db.Model, UserMixin):
+    id = db.Column(db.INTEGER, primary_key=True)
+    login = db.Column(db.VARCHAR)
     password = db.Column(db.VARCHAR)
     adress = db.Column(db.TEXT)
     phone = db.Column(db.VARCHAR)
-    cookie = db.Column(db.VARCHAR)
 
 
-def createcookie():
-    alphabet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    string = ""
-    for i in range(16):
-        string += choice(alphabet)
-    return string
+@login_manager.user_loader
+def load_user(login):
+    user = Users.query.get(login)
+    return user
 
 
 @app.route('/')
 def main_page():
     pizzas = Pizzas.query.all()
     users = Users.query.all()
-    print(cookie().headers)
     context = {
         'pizzas': pizzas,
         'user': users,
-        'cookie': cookie(),
+        'current_user': current_user,
         'title': "ХОЧУ ПИТСЫ"
     }
     return render_template("main.html", **context)
@@ -73,22 +69,28 @@ def registration():
         password = request.form.get('password')
         adress = request.form.get('adress')
         phone = request.form.get('phone')
-        guest = request.cookies.get('site')
-        new_user = Users(login=login, password=password, adress=adress, phone=phone, cookie=guest)
+        user_id = db.session.query(db.func.max(Users.id)).first()[0] + 1
+        new_user = Users(login=login, password=password, adress=adress, phone=phone, id=user_id)
         db.session.add(new_user)
         db.session.commit()
+        login_user(new_user)
+
     return render_template("registration.html", title="Регистрация")
 
 
-@app.route('/cookie/')
-def cookie():
-    if not request.cookies.get('site'):
-        res = make_response("Setting a cookie")
-        session['site'] = createcookie()
-        res.set_cookie('site', session['site'], 60*60*60*365)
-    else:
-        res = request.cookies.get('site')
-    return res
+@app.route("/login", methods=['GET', 'POST'])
+def log():
+    title = 'hello'
+    if request.method == 'POST':
+        login = request.form.get('login')
+        password = request.form.get('password')
+        users = Users.query.all()
+        for user in users:
+            if user.login == login:
+                if user.password == password:
+                    login_user(user)
+                    title = current_user.login
+    return render_template("form.html", title=title)
 
 
 if __name__ == '__main__':
