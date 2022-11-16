@@ -1,24 +1,23 @@
 {% extends "base.html" %}
-
 {% block body %}
-    <h1>{{ title }}</h1>
-    <style>
-        .add {
-            margin: auto;
-        }
-
-        input[type=submit] {
-            margin: 10px 10px 2px 50px;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles/profile.css">
+    <h1 class="profile_head">{{ title }}</h1>
     <form method="post">
         <div class="add">
-            <label>Name<input name="name" type="text" required></label>
-            <label>Properties<input name="properties" type="text" required></label>
-            <label>price<input name="price" type="text" required></label>
-            <label>image<input name="image" type="text" required></label>
-            <input type="submit" value="Отправить">
+            <p class="profile_bar">Название</p>
+            <a><input name="name" type="text" required class="input"></a>
+            <p class="profile_bar">Описание</p>
+            <a><input name="properties" type="text" required class="input"></a>
+            <p class="profile_bar">Тип продукта</p>
+            <select class="input" name="type">
+              <option value="pizza">Пицца</option>
+              <option value="drink">Напиток</option>
+            </select>
+            <p class="profile_bar">Цена</p>
+            <a><input name="price" type="text" required class="input"></a>
+            <p class="profile_bar">Изображение</p>
+            <a><input name="image" type="text" required class="input"></a>
+            <p><input type="submit" value="Добавить" class="save"></p>
         </div>
-        <h3 onclick="location.href = '{{ url_for("main_page") }}'" class="new_film">Назад</h3>
     </form>
 {% endblock %}

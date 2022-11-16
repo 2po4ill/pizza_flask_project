@@ -1,10 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" >
     <title>{{ title }}</title>
+
 </head>
+<link rel="stylesheet" href="/static/styles/base.css">
 <body>
+<div class="grid">
+{% if current_user.is_active %}
+    <label onclick="location.href = '{{ url_for("profile") }}'" class="profile"> ПРОФИЛЬ </label>
+    <label onclick="location.href = '{{ url_for("profile") }}'" class="profile"> {{ current_user.login }} </label>
+    <label onclick="location.href = '{{ url_for("bin") }}'" class="bin"> КОРЗИНА </label>
+    <label onclick="location.href = '{{ url_for("bin") }}'" class="sum"> {{ "%.2f"|format(conclude) }} ₽ </label>
+{% else %}
+    <label onclick="location.href = '{{ url_for("registration") }}' " class="bin"> РЕГИСТРАЦИЯ </label>
+    <label onclick="location.href = '{{ url_for("log") }}'" class="profile"> ВОЙТИ </label>
+{% endif %}
+<img src="https://sun9-east.userapi.com/sun9-75/s/v1/ig2/SETsxeblxgp1jvlVuzxNX-6-Meyy0CPW-65Jtg8PF18bF78Wa_poYpg0bo_h24ug9GjPnJFcVdrquLJHFthb3CF1.jpg?size=807x471&quality=96&type=album" class="photo" alt="Здесь должно быть лого" onclick="location.href = '{{ url_for("main_page") }}'"></img>
+</div>
     {% block body %}{% endblock %}
+
 </body>
 </html>

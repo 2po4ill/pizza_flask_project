@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block body %}
+    <link rel="stylesheet" href="/static/styles/bin.css">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <link rel="stylesheet" href="/static/styles/profile.css">
+    <link rel="stylesheet" href="/static/styles/details.css">
+    <h1 class="profile_head"> Детали заказа №{{ receipt.id }} </h1>
+    {% for order in orders %}
+        {% for pizza in pizzas %}
+            {% if pizza.id == order.pizza_id %}
+                <div class="order">
+                    <img src="{{ pizza.image }}" alt="Здесь должна быть {{ pizza.name }}" class="product_photo" width="125" height="125">
+                    <p class="header"> {{ pizza.name }} </p>
+                    <p class="profile_bar"> Размер: {{ order.size }} см</p>
+                    <p class="profile_bar"> Количество: {{ order.quantity }} </p>
+                    <p class="profile_bar"> Цена: {{ "%.2f"|format(order.price) }} ₽</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    <h4 class="total_price"> Заказ за {{ "%.2f"|format(receipt.total_price) }} ₽</h4>
+    <h5 onclick="location.href = '{{ url_for("readd", receipt=receipt.id) }}'" class="new_pizza"> Повторить </h5>
+{% endblock %}

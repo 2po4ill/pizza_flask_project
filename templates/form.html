@@ -1,22 +1,14 @@
 {% extends "base.html" %}
-
 {% block body %}
-    <h1>{{ title }}</h1>
-    <style>
-        .add {
-            margin: auto;
-        }
-
-        input[type=submit] {
-            margin: 10px 10px 2px 50px;
-        }
-    </style>
+    <link rel="stylesheet" href="/static/styles/profile.css">
+    <h1 class="profile_head">{{ title }}</h1>
     <form method="post">
         <div class="add">
-            <label>Login<input name="login" type="text" required></label>
-            <label>Password<input name="password" type="text" required></label>
-            <input type="submit" value="Отправить">
+            <p class="profile_bar">Логин</p>
+            <a><input name="login" type="text" required class="input"></a>
+            <p class="profile_bar">Пароль</p>
+            <a><input name="password" type="text" required class="input"></a>
+            <p><input type="submit" value="Войти" class="save"></p>
         </div>
-        <h3 onclick="location.href = '{{ url_for("main_page") }}'" class="new_film">Назад</h3>
     </form>
 {% endblock %}

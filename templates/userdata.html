@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block body %}
+    <link rel="stylesheet" href="/static/styles/profile.css">
+    <link rel="stylesheet" href="/static/styles/bin.css">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <h1 class="profile_head"> Личные данные </h1>
+    <form method="post">
+        <div class="">
+            <p class="profile_bar"> Логин: </p>
+            <a> {{ current_user.login }} </a>
+            <p class="profile_bar"> Пароль: </p>
+            <a> {{ current_user.password }} </a>
+            <p class="profile_bar"> Адрес: </p>
+            <label> <input name="adress" type="text" value="{{ current_user.adress }}" required class="input"> </label>
+            <p class="profile_bar"> Телефон: </p>
+            <label><input name="phone" type="text" value="{{ current_user.phone }}" class="input" required></label>
+            <p><input type="submit" value="Сохранить"></p>
+        </div>
+    </form>
+    <h2 onclick="location.href = '{{ url_for("history") }}'" class="new_pizza">История</h2>
+    <h3 onclick="location.href = '{{ url_for("logout") }}'" class="new_pizza">Выйти</h3>
+{% endblock %}
