@@ -84,7 +84,7 @@ def main_page():
         pizza_id = get_pizza_id(list(request.form.keys())[0])
         quantity = request.form.get(f'quantity_{pizza_id}')
         if Pizzas.query.get(pizza_id).type == 'pizza':
-            size = request.form.get(f'{pizza_id}')
+            size = request.form.get(f'size_{pizza_id}')
             price = Pizzas.query.get(pizza_id).price * int(quantity) * (int(size) / 25)
         else:
             size = '25'
@@ -269,7 +269,7 @@ def history():
         for receipt in Receipt.query.all():
             if receipt.user_id == current_user.id:
                 receipts.append(receipt.id)
-            receipts.reverse()
+    receipts.reverse()
     return render_template("history.html", receipts=receipts, conclude=conclude)
 
 

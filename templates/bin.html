@@ -9,7 +9,9 @@
                 <div class="order">
                     <img src="{{ pizza.image }}" alt="Здесь должна быть {{ pizza.name }}" class="product_photo" width="125" height="125">
                     <p class="header"> {{ pizza.name }} </p>
-                    <p class="profile_bar"> Размер: {{ order.size }} см</p>
+                    {% if pizza.type == 'pizza' %}
+                        <p class="profile_bar"> Размер: {{ order.size }} см</p>
+                    {% endif %}
                     <p class="profile_bar"> Количество: {{ order.quantity }} </p>
                     <p class="profile_bar"> Цена: {{ "%.2f"|format(order.price) }} ₽</p>
                     <h3 onclick="location.href = '{{ url_for("delete", order=order.id) }}'" class="delete">Убрать из корзины</h3>
