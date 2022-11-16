@@ -81,42 +81,52 @@ def main_page():
         'title': "ХОЧУ ПИТСЫ"
     }
     if request.method == 'POST':
-        pizza_id = get_pizza_id(list(request.form.keys())[0])
-        quantity = request.form.get(f'quantity_{pizza_id}')
-        if Pizzas.query.get(pizza_id).type == 'pizza':
-            size = request.form.get(f'size_{pizza_id}')
-            price = Pizzas.query.get(pizza_id).price * int(quantity) * (int(size) / 25)
-        else:
-            size = '25'
-            price = Pizzas.query.get(pizza_id).price * int(quantity)
-        order_id = db.session.query(db.func.max(Ord.id)).first()[0] + 1 if Ord.query.all() else 1
-        order = Ord(id=order_id, pizza_id=pizza_id, size=size, quantity=quantity, price=price)
-        collision = True
-        if current_user.orders:
-            for test in current_user.orders:
-                if Ord.query.get(test).pizza_id == int(order.pizza_id) and Ord.query.get(test).size == int(order.size):
-                    Ord.query.get(test).quantity += int(order.quantity)
-                    if Pizzas.query.get(pizza_id).type == 'pizza':
-                        Ord.query.get(test).price = Pizzas.query.get(pizza_id).price \
-                                                    * Ord.query.get(test).quantity * (int(size)/25)
+        if get_pizza_id(list(request.form.keys())[0]):
+            pizza_id = get_pizza_id(list(request.form.keys())[0])
+            quantity = request.form.get(f'quantity_{pizza_id}')
+            if Pizzas.query.get(pizza_id).type == 'pizza':
+                size = request.form.get(f'size_{pizza_id}')
+                price = Pizzas.query.get(pizza_id).price * int(quantity) * (int(size) / 25)
+            else:
+                size = '25'
+                price = Pizzas.query.get(pizza_id).price * int(quantity)
+            order_id = db.session.query(db.func.max(Ord.id)).first()[0] + 1 if Ord.query.all() else 1
+            order = Ord(id=order_id, pizza_id=pizza_id, size=size, quantity=quantity, price=price)
+            collision = True
+            if current_user.orders:
+                for test in current_user.orders:
+                    if Ord.query.get(test).pizza_id == int(order.pizza_id) and Ord.query.get(test).size == int(order.size):
+                        Ord.query.get(test).quantity += int(order.quantity)
+                        if Pizzas.query.get(pizza_id).type == 'pizza':
+                            Ord.query.get(test).price = Pizzas.query.get(pizza_id).price \
+                                                        * Ord.query.get(test).quantity * (int(size)/25)
+                        else:
+                            Ord.query.get(test).price = Pizzas.query.get(pizza_id).price * Ord.query.get(test).quantity
+                        collision = False
                     else:
-                        Ord.query.get(test).price = Pizzas.query.get(pizza_id).price * Ord.query.get(test).quantity
-                    collision = False
-                else:
-                    db.session.add(order)
-        else:
-            db.session.add(order)
-        db.session.commit()
-        if Users.query.get(current_user.id).orders:
-            orders = Users.query.get(current_user.id).orders.copy()
-            orders.append(order_id)
-        else:
-            orders = [order_id]
-        if collision:
-            Users.query.get(current_user.id).orders = orders
+                        db.session.add(order)
+            else:
+                db.session.add(order)
             db.session.commit()
-        return redirect("/")
-    return render_template("main.html", **context)
+            if Users.query.get(current_user.id).orders:
+                orders = Users.query.get(current_user.id).orders.copy()
+                orders.append(order_id)
+            else:
+                orders = [order_id]
+            if collision:
+                Users.query.get(current_user.id).orders = orders
+                db.session.commit()
+                return redirect("/")
+        else:
+            pizza_type = request.form.get('type')
+            if request.form.get('price_high'):
+                price_high = request.form.get('price_high')
+            else:
+                price_high = int(db.session.query(db.func.max(Pizzas.price)).first()[0] + 1)
+            return render_template("main.html", **context, type=pizza_type,
+                                   price_high=int(price_high))
+    return render_template("main.html", **context, type='all',
+                           price_high=int(db.session.query(db.func.max(Pizzas.price)).first()[0] + 1))
 
 
 @app.route("/add", methods=['GET', 'POST'])

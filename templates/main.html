@@ -1,6 +1,19 @@
 {% extends "base.html" %}
 {% block body %}
     <link rel="stylesheet" href="/static/styles/main.css">
+    <link rel="stylesheet" href="/static/styles/profile.css">
+    <form method="post">
+        <div class="pizza_box">
+             <select class="input" name="type">
+                 <option value="all">Всё</option>
+                 <option value="pizza">Пицца</option>
+                 <option value="drink">Напиток</option>
+             </select>
+            <p class="profile_bar">До</p>
+            <a><input name="price_high" type="text" class="input"></a>
+            <input type="submit" value="Найти" class="submit">
+        </div>
+    </form>
     {% for pizza in pizzas %}
         <div id="popup_{{ pizza.id }}" class="popup">
             <div id="window_{{ pizza.id }}" class="window">
@@ -31,16 +44,18 @@
                 <a href="#" class="close">╳</a>
             </div>
         </div>
-        <div onclick="location.href = '#popup_{{ pizza.id }}'" class="pizza_box">
-            <img src="{{ pizza.image }}" width=150 height=150 alt="Здесь должна быть фотка {{ pizza.name }}" class="product_photo">
-            <p class="header">{{ pizza.name }}</p>
-            <p class="description"> {{ pizza.properties }}</p>
-            {% if pizza.type == pizza %}
-                <p class="price">От {{ pizza.price }} ₽</p>
-            {% else %}
-                <p class="price">{{ pizza.price }} ₽</p>
-            {% endif %}
-        </div>
+        {% if (pizza.type == type or type == 'all') and pizza.price < price_high %}
+            <div onclick="location.href = '#popup_{{ pizza.id }}'" class="pizza_box">
+                <img src="{{ pizza.image }}" width=150 height=150 alt="Здесь должна быть фотка {{ pizza.name }}" class="product_photo">
+                <p class="header">{{ pizza.name }}</p>
+                <p class="description"> {{ pizza.properties }}</p>
+                {% if pizza.type == pizza %}
+                    <p class="price">От {{ pizza.price }} ₽</p>
+                {% else %}
+                    <p class="price">{{ pizza.price }} ₽</p>
+                {% endif %}
+            </div>
+        {% endif %}
     {% endfor %}
     {% if current_user.role == 'admin' %}
         <h4 onclick="location.href = '{{ url_for("add_pizza") }}'" class="new_pizza">Добавить</h4>
