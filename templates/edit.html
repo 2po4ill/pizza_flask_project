@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block body %}
+    <link rel="stylesheet" href="/static/styles/profile.css">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    {% for pizza in pizzas %}
+        {% if pizza.id == id %}
+            <form method="post">
+                <div class="pizza_box">
+                    <p class="profile_bar">Название</p>
+                    <a><input name="name" type="text" value="{{ pizza.name }}" required class="input"></a>
+                    <p class="profile_bar">Описание</p>
+                    <a><input name="properties" type="text" value="{{ pizza.properties }}" required class="input"></a>
+                    <p class="profile_bar">Цена</p>
+                    <a><input name="price" type="text" value="{{ pizza.price }}" required class="input"></a>
+                    <p class="profile_bar">Изображение</p>
+                    <a><input name="image" type="text" value="{{ pizza.image }}" required class="input"></a>
+                    <p><input type="submit" value="Сохранить" class="save"></p>
+                </div>
+            <div class="pizza_box">
+                <img src="{{ pizza.image }}" width=150 height=150 alt="Здесь должна быть фотка {{ pizza.name }}" class="product_photo">
+                <p class="header">{{ pizza.name }}</p>
+                <p class="description"> {{ pizza.properties }}</p>
+                <p class="price">От {{ pizza.price }} ₽</p>
+            </div>
+            </form>
+            <form method="post">
+                <input type="submit" value="Удалить" name="delete" onclick="return confirm('Вы уверены?')" class="delete_profile">
+            </form>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

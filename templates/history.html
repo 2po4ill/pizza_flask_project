@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block body %}
+    <link rel="stylesheet" href="/static/styles/bin.css">
+    {% for receipt in receipts %}
+        <p class="buy" onclick="location.href = '{{ url_for("details", receipt=receipt) }}'"> Заказ №{{ receipt }} </p>
+    {% endfor %}
+{% endblock %}

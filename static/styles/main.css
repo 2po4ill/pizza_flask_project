@@ -1,0 +1,138 @@
+.new_pizza {
+    cursor: pointer;
+    text-align: center;
+    border-radius: 8px;
+    width: 300px;
+    height: 50px;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 105, 0, 0.6);
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    line-height: 40px;
+        font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+}
+.edit {
+    cursor: pointer;
+    text-align: center;
+    border-radius: 8px;
+    width: 300px;
+    height: 50px;
+    margin: auto;
+    position: relative;
+    right: 17px;
+    background-color: rgba(255, 105, 0, 0.6);
+    color: rgb(255, 255, 255);
+    font-size: 25px;
+    line-height: 40px;
+        font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+}
+.header {
+    margin: 8px 0px;
+    color: rgb(0, 0, 0);
+    font-size: 20px;
+    line-height: 24px;
+    font-family: "Segoe UI", serif;
+    font-weight: 500;
+    text-align: left;
+}
+.description{
+    margin: 0px;
+    width: 100%;
+    font-size: 14px;
+    line-height: 20px;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    color: rgb(92, 99, 112);
+    font-weight: 400;
+    text-align: left;
+}
+.price{
+    flex: 1 1 auto;
+    padding-right: 4px;
+    font-size: 20px;
+    color: rgb(0, 0, 0);
+    font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 600;
+    line-height: 22px;
+    display: flex;
+    flex-flow: column;
+    -webkit-box-pack: center;
+    justify-content: center;
+}
+.popup {
+    background: rgba(102, 102, 102, 0.5);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+}
+.window{
+    width: 300px;
+    height: 500px;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    background: #fff;
+    z-index: 1;
+}
+.popup:target {display: block;}
+.close {
+    display: inline-block;
+    border: 1px solid;
+    padding: 0 12px;
+    margin: 10px;
+    text-decoration: none;
+    background: #f2f2f2;
+    font-size: 14pt;
+    cursor:pointer;
+}
+.close:hover {background: #e6e6ff;}
+.pizza_box {
+    display: inline-block;
+    width: 250px;
+    height: 300px;
+    margin: 30px;
+    cursor:pointer;
+}
+.product_photo {
+    position: relative;
+    left: 40px;
+    z-index: 0;
+}
+.order_parameters{
+    margin: 20px;
+}
+.size{
+    font-family: "Segoe UI", serif;
+    font-weight: 500;
+    margin: 10px;
+}
+.quantity{
+    width: 15px;
+}
+.submit{
+    margin: 10px;
+    cursor:pointer;
+}
+.message{
+    left: 27px;
+    right: 26px;
+    font-family: Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: rgb(0, 0, 0);
+    cursor:pointer;
+    margin-top: 10px;
+}
