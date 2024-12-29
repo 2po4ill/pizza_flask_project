@@ -1,50 +1,42 @@
 from flask import Flask, render_template, request, redirect
-from flask_sqlalchemy import SQLAlchemy
+from models import Pizzas, Receipt, Users, Ord, db
 from datetime import timedelta
+import os
 from flask_login import LoginManager, UserMixin, current_user, login_user, login_required, logout_user
-
+import requests_oauthlib
 
 app = Flask(__name__)
 app.secret_key = "111"
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Init123#@localhost:5432/pizza_shop"
 app.permanent_session_lifetime = timedelta(days=365)
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Init123#@localhost:5432/pizza_shop"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+app.config['OAUTH_CREDENTIALS'] = {
+    'github': {
+        'id': 'Ov23li1dXZso1zRRnSoW',
+        'secret': '9ba4eeb75555f266337f202c9508ce2b76f1fd0d'
+    }
+}
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
-class Pizzas(db.Model):
-    id = db.Column(db.INTEGER, primary_key=True)
-    name = db.Column(db.VARCHAR)
-    properties = db.Column(db.TEXT)
-    price = db.Column(db.REAL)
-    image = db.Column(db.TEXT)
-    type = db.Column(db.VARCHAR)
+session = requests_oauthlib.OAuth2Session(
+    client_id='Ov23li1dXZso1zRRnSoW',
+    redirect_uri='http://127.0.0.1:5000',
+    scope=['repo', 'user'],
+)
 
+authorization_url, state = session.authorization_url('https://github.com/login/oauth/authorize')
+print('Please go here and authorize:', authorization_url)
 
-class Users(db.Model, UserMixin):
-    id = db.Column(db.INTEGER, primary_key=True)
-    login = db.Column(db.VARCHAR)
-    password = db.Column(db.VARCHAR)
-    adress = db.Column(db.TEXT)
-    phone = db.Column(db.VARCHAR)
-    role = db.Column(db.VARCHAR)
-    orders = db.Column(db.ARRAY(db.INTEGER))
-
-
-class Ord(db.Model):
-    id = db.Column(db.INTEGER, primary_key=True)
-    pizza_id = db.Column(db.INTEGER)
-    size = db.Column(db.INTEGER)
-    quantity = db.Column(db.INTEGER)
-    price = db.Column(db.REAL)
-
-
-class Receipt(db.Model):
-    id = db.Column(db.INTEGER, primary_key=True)
-    orders = db.Column(db.ARRAY(db.INTEGER))
-    user_id = db.Column(db.INTEGER)
-    total_price = db.Column(db.REAL)
+# Get access token
+token_url = 'https://github.com/login/oauth/access_token'
+redirect_response = input('Paste the full redirect URL here:')
+token = session.fetch_token(token_url, authorization_response=redirect_response, client_secret='9ba4eeb75555f266337f202c9508ce2b76f1fd0d')
+print(token)
 
 
 @login_manager.user_loader
@@ -125,8 +117,12 @@ def main_page():
                 price_high = int(db.session.query(db.func.max(Pizzas.price)).first()[0] + 1)
             return render_template("main.html", **context, type=pizza_type,
                                    price_high=int(price_high))
-    return render_template("main.html", **context, type='all',
-                           price_high=int(db.session.query(db.func.max(Pizzas.price)).first()[0] + 1))
+    if db.session.query(db.func.max(Pizzas.price)).first()[0] :
+        return render_template("main.html", **context, type='all',
+                               price_high=int(db.session.query(db.func.max(Pizzas.price)).first()[0] + 1))
+    else:
+        return render_template("main.html", **context, type='all',
+                               price_high=0)
 
 
 @app.route("/add", methods=['GET', 'POST'])
@@ -160,10 +156,10 @@ def registration():
     if request.method == 'POST':
         login = request.form.get('login')
         password = request.form.get('password')
-        adress = request.form.get('adress')
+        address = request.form.get('address')
         phone = request.form.get('phone')
         user_id = db.session.query(db.func.max(Users.id)).first()[0] + 1 if Users.query.all() else 1
-        new_user = Users(login=login, password=password, adress=adress, phone=phone, id=user_id, role='user')
+        new_user = Users(login=login, password=password, address=address, phone=phone, id=user_id, role='user')
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
@@ -227,7 +223,7 @@ def profile():
     try:
         conclude = total()
         if request.method == 'POST':
-            Users.query.get(current_user.id).adress = request.form.get('adress')
+            Users.query.get(current_user.id).address = request.form.get('address')
             Users.query.get(current_user.id).phone = request.form.get('phone')
             db.session.commit()
         return render_template("userdata.html", title="Профиль", current_user=current_user, conclude=conclude)
