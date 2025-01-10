@@ -1,5 +1,4 @@
 from datetime import timedelta
-
 from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy

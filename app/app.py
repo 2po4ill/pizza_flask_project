@@ -15,30 +15,6 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-app.config['OAUTH_CREDENTIALS'] = {
-    'github': {
-        'id': 'Ov23li1dXZso1zRRnSoW',
-        'secret': '9ba4eeb75555f266337f202c9508ce2b76f1fd0d'
-    }
-}
-os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
-
-session = requests_oauthlib.OAuth2Session(
-    client_id='Ov23li1dXZso1zRRnSoW',
-    redirect_uri='http://127.0.0.1:5000',
-    scope=['repo', 'user'],
-)
-
-authorization_url, state = session.authorization_url('https://github.com/login/oauth/authorize')
-print('Please go here and authorize:', authorization_url)
-
-# Get access token
-token_url = 'https://github.com/login/oauth/access_token'
-redirect_response = input('Paste the full redirect URL here:')
-token = session.fetch_token(token_url, authorization_response=redirect_response, client_secret='9ba4eeb75555f266337f202c9508ce2b76f1fd0d')
-print(token)
-
-
 @login_manager.user_loader
 def load_user(login):
     user = Users.query.get(login)

@@ -1,0 +1,6 @@
+anchor_pki==0.3.0
+Flask==3.1.0
+Flask_Login==0.6.3
+flask_sqlalchemy==3.1.1
+psycopg2-binary==2.9.10
+requests_oauthlib==2.0.0
