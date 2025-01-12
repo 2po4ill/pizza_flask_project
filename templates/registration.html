@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 {% block body %}
-    <link rel="stylesheet" href="/static/styles/profile.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/profile.css') }}">
     <h1 class="profile_head">{{ title }}</h1>
     </style>
-    <form method="post">
+    <form method="post" action="/reg">
         <div class="add">
             <p class="profile_bar">Логин</p>
             <a><input name="login" type="text" required class="input"></a>
@@ -13,7 +13,7 @@
             <a><input name="adress" type="text" required class="input"></a>
             <p class="profile_bar">Phone</p>
             <a><input name="phone" type="text" required class="input"></a>
-            <p><input type="submit" value="Зарегистрироваться" class="save"></p>
+            <p><input type="submit" value="Зарегистрироваться" class="save" onclick="{{ url_for('main_page') }}"></p>
         </div>
     </form>
 {% endblock %}

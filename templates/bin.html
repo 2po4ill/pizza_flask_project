@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block body %}
-    <link rel="stylesheet" href="/static/styles/bin.css">
-    <link rel="stylesheet" href="/static/styles/main.css">
-    <link rel="stylesheet" href="/static/styles/profile.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/bin.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/profile.css') }}">
     {% for order in orders %}
         {% for pizza in pizzas %}
             {% if pizza.id == order.pizza_id %}

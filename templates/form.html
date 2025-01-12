@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block body %}
-    <link rel="stylesheet" href="/static/styles/profile.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/profile.css') }}">
     <h1 class="profile_head">{{ title }}</h1>
     <form method="post">
         <div class="add">

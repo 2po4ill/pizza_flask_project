@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
-    <link rel="stylesheet" href="/static/styles/profile.css">
-    <link rel="stylesheet" href="/static/styles/main.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/profile.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/main.css') }}">
     {% for pizza in pizzas %}
         {% if pizza.id == id %}
             <form method="post">

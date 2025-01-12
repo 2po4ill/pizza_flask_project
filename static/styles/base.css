@@ -46,3 +46,12 @@
         left: 50%;
         cursor:pointer;
     }
+    .support {
+        left: 75%;
+        font-family: "Segoe UI", serif;
+        font-weight: 500;
+        color: black;
+        font-size: 14px;
+        line-height: 5;
+        cursor:pointer;
+    }

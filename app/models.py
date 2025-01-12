@@ -2,6 +2,8 @@ from datetime import timedelta
 from flask import Flask
 from flask_login import UserMixin
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+
 
 app = Flask(__name__)
 app.secret_key = "111"
@@ -9,6 +11,9 @@ app.permanent_session_lifetime = timedelta(days=365)
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:Init123#@localhost:5432/pizza_shop"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+ma = Marshmallow(app)
+
+
 class Pizzas(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     name = db.Column(db.VARCHAR)
@@ -28,6 +33,10 @@ class Users(db.Model, UserMixin):
     orders = db.Column(db.ARRAY(db.INTEGER))
 
 
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Users
+
 class Ord(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     pizza_id = db.Column(db.INTEGER)
@@ -41,3 +50,4 @@ class Receipt(db.Model):
     orders = db.Column(db.ARRAY(db.INTEGER))
     user_id = db.Column(db.INTEGER)
     total_price = db.Column(db.REAL)
+

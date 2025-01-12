@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block body %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='styles/profile.css') }}">
+    <h1 class="profile_head">{{ title }}</h1>
+    <form method="post" action="/join_room">
+    {% for room in rooms %}
+        <label>{{ room }}<input type="radio" name="code" value={{ room }} class="room"/></label>
+    {% endfor %}
+    <input type="submit" value="Войти в комнату" class="submit">
+    </form>
+{% endblock %}
